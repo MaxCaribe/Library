@@ -8,7 +8,7 @@ namespace DAL.Models
         [Required(ErrorMessage = "Book should have ISBN.")]
         [Key]
         [MaxLength(13, ErrorMessage = "ISBN has less digits"), MinLength(13, ErrorMessage = "ISBN has more digits")]
-        [RegularExpression("/d+", ErrorMessage = "ISBN consists of digits")]
+        [RegularExpression(@"\d+", ErrorMessage = "ISBN consists of digits")]
         public string ISBN { get; set; }
 
         [Required(ErrorMessage = "Book should have name.")]
@@ -34,5 +34,8 @@ namespace DAL.Models
 
         [Required(ErrorMessage = "Book publish date must be.")]
         public DateTime PublicationDate { get; set; }
+
+        [RegularExpression(@"[\d]{1,3}",ErrorMessage = "Incorrect quantity.")]
+        public int Quantity { get; set; }
     }
 }
