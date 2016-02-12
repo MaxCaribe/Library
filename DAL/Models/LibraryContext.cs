@@ -7,7 +7,7 @@
     public class LibraryContext : DbContext
     {
         public LibraryContext()
-            : base("name=LibraryContext")
+            : base("LibraryContext")
         {
         }
     }

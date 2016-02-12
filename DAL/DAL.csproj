@@ -51,8 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BookModel.cs" />
+    <Compile Include="Models\InSubscriptionModel.cs" />
     <Compile Include="Models\LibraryContext.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

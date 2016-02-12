@@ -12,17 +12,21 @@ namespace DAL.Models
         public string ISBN { get; set; }
 
         [Required(ErrorMessage = "Book should have name.")]
+        [MaxLength(256)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Book should have at least one author.")]
+        [MaxLength(256)]
         public string Author { get; set; }
 
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Book should have publisher.")]
+        [MaxLength(128)]
         public string Publisher { get; set; }
 
         [Required(ErrorMessage = "We need to know what language is used in book.")]
+        [MaxLength(32,ErrorMessage = "Language name can't be so long.")]
         public string Language { get; set; }
 
         [Required(ErrorMessage = "Book should be hardback/paperback.")]
