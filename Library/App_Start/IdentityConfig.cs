@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Library.Models;
+using DAL.Models;
 
 namespace Library
 {
@@ -42,7 +43,7 @@ namespace Library
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<LibraryContext>()));
             // Настройка логики проверки имен пользователей
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Models
 {
-    public class BookModel
+    public class Book
     {
         [Required(ErrorMessage = "Book should have ISBN.")]
         [Key]
@@ -41,5 +41,9 @@ namespace DAL.Models
 
         [RegularExpression(@"[\d]{1,3}",ErrorMessage = "Incorrect quantity.")]
         public int Quantity { get; set; }
+
+        public byte[] Image { get; set; }
+
+        public string ImageMime { get; set; }
     }
 }

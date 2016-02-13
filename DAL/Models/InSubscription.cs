@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Models
 {
-    public class InSubscriptionModel
+    public class InSubscription
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
@@ -29,7 +29,8 @@ namespace DAL.Models
         [Required]
         public bool IsInUse {get;set;}
 
-        public BookModel Book { get; set; }
+        public Book Book { get; set; }
 
+        public ApplicationUser User { get; set; }
     }
 }
