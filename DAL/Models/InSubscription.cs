@@ -24,7 +24,7 @@ namespace DAL.Models
         public DateTime DateOfReceipt { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DataType ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
         [Required]
         public bool IsInUse {get;set;}

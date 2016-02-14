@@ -63,6 +63,7 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\InSubscription.cs" />
     <Compile Include="Models\LibraryContext.cs" />
+    <Compile Include="Models\LibraryInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

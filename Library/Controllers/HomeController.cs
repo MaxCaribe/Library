@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DAL.Repositories;
 
 namespace Library.Controllers
 {
     public class HomeController : Controller
     {
+        DefaultLibraryRepository dlr = new DefaultLibraryRepository();
         public ActionResult Index()
         {
-            
-            return View();
+
+            return View(dlr.GetBooks());
         }
 
         public ActionResult About()
