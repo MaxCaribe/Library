@@ -1,19 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BLL.Services.Interfaces;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using DAL.Repositories;
+using Library.Models;
 
 namespace Library.Controllers
 {
     public class HomeController : Controller
     {
-        DefaultLibraryRepository dlr = new DefaultLibraryRepository();
-        public ActionResult Index()
-        {
+        private ILibraryService service;
+        public int PageSize = 4;
 
-            return View(dlr.GetBooks());
+        public HomeController(ILibraryService libraryService)
+        {
+            service = libraryService;
+        }
+
+        public ActionResult Index(int page = 1)
+        {
+            PagedBookListViewModel model = new PagedBookListViewModel{
+                Books=service.getBooks().Books.OrderBy(x=>x.ISBN).Skip((page-1)*PageSize).Take(PageSize),
+            PageInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = PageSize,
+                TotalItems = service.getBooks().Books.Count()
+            }
+        };
+            return View(model);
         }
 
         public ActionResult About()
