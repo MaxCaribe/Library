@@ -21,6 +21,7 @@ namespace BLL.App_Start
             kernel.Bind<ILibraryService>().To<LibraryService>();
             kernel.Bind<ILibraryRepository>().To<DefaultLibraryRepository>();
             Mapper.CreateMap<Book, BookViewModel>();
+            Mapper.CreateMap<BookViewModel, Book>();
         }
     }
 }
