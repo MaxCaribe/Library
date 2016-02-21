@@ -46,6 +46,7 @@ namespace DAL.Repositories
             using (var context = new LibraryContext())
             {
                 context.Books.Add(book);
+                context.SaveChanges();
             }
         }
 

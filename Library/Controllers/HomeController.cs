@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Library.Models;
+using BLL.ViewModels;
 
 namespace Library.Controllers
 {
@@ -41,6 +42,19 @@ namespace Library.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public FileContentResult GetImage(string isbn)
+        {
+            BookViewModel book = service.getBooks().Books.First(p => p.ISBN==isbn);
+            if (book != null)
+            {
+                return File(book.Image, book.ImageMime);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

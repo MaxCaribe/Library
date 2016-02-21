@@ -7,8 +7,13 @@
 @foreach (var p in Model.Books)
 {
     <div>
-        @if (p.Image.Length>0) { 
-        <h4>@p.Image</h4>
+        @if (p.Image.Length > 0)
+        {
+            <div class="pull-left" style="margin-right: 10px">
+                <img class="img-thumbnail" width="175" height="175"
+                     src="@Url.Action("GetImage", "Home",
+ new { p.ISBN })" />
+            </div>
         }
         <h3>@p.Name</h3>
         @p.Author
