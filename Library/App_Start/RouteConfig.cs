@@ -18,6 +18,13 @@ namespace Library
                 url: "{controller}/{action}/{page}",
                 defaults: new { controller = "Home", action = "Index", page = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Admin",
+                url: "{controller}/{action}/{isbn}",
+                defaults: new { controller = "Home", action = "Index", isbn = UrlParameter.Optional }
+            );
+            
         }
     }
 }

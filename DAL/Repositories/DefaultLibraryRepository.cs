@@ -11,15 +11,18 @@ namespace DAL.Repositories
 {
     public class DefaultLibraryRepository : ILibraryRepository
     {
-        public IList<Book> GetBooks()
+
+        public IList<Book> Books
         {
-            using (var context = new LibraryContext())
+            get
             {
-                DbSet<Book> books = context.Books;
-                return new List<Book>(books);
+                using (var context = new LibraryContext())
+                {
+                    DbSet<Book> books = context.Books;
+                    return new List<Book>(books);
+                }
             }
         }
-
 
         public IList<InSubscription> GetAllSubscriptions()
         {
@@ -45,7 +48,7 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
-                context.Books.Add(book);
+                Add(book, context);
                 context.SaveChanges();
             }
         }
@@ -68,6 +71,37 @@ namespace DAL.Repositories
         public void ReturnBook(InSubscription subscription)
         {
             throw new NotImplementedException();
+        }
+
+
+        public void EditBook(Book book)
+        {
+            using (var context = new LibraryContext())
+            {
+                Remove(book.ISBN, context);
+                Add(book, context);
+                context.SaveChanges();
+            }
+        }
+
+        public void RemoveBook(string isbn)
+        {
+            using (var context = new LibraryContext())
+            {
+                Remove(isbn, context);
+                context.SaveChanges();
+            }
+        }
+
+        private static void Add(Book book, LibraryContext context)
+        {
+            context.Books.Add(book);
+        }
+
+        private static void Remove(string isbn, LibraryContext context)
+        {
+            Book bookToRemove = context.Books.Find(isbn);
+            context.Books.Remove(bookToRemove);
         }
     }
 }
