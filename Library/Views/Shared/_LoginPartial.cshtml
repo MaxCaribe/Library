@@ -3,14 +3,26 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Welcome, " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            @if (Roles.IsUserInRole("admin"))
+            {
+            <li>
+                @Html.ActionLink("Manage books", "Index", new { area = "Admin", controller = "Book" })
+            </li>
+                <li>
+                    @Html.ActionLink("Manage users", "Index", new { area = "Admin", controller = "Users" })
+                </li>
+            }
+            else
+            {
+                <li>
+                    @Html.ActionLink("Welcome, " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
+            }
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+        </ul>
     }
 }
 else

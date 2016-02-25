@@ -11,6 +11,7 @@ using BLL.ViewModels;
 using BLL.Services.Interfaces;
 using BLL.Services;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
 
 namespace BLL.App_Start
 {
@@ -22,6 +23,7 @@ namespace BLL.App_Start
             kernel.Bind<ILibraryRepository>().To<DefaultLibraryRepository>();
             Mapper.CreateMap<Book, BookViewModel>();
             Mapper.CreateMap<BookViewModel, Book>();
+            Mapper.CreateMap<ApplicationUser, UserViewModel>();
         }
     }
 }

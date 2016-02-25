@@ -33,17 +33,6 @@ namespace DAL.Repositories
             }
         }
 
-        public IList<ApplicationUser> GetUsers()
-        {
-            using (var context = new LibraryContext())
-            {
-                IDbSet<ApplicationUser> users = context.Users;
-                return new List<ApplicationUser>(users);
-            }
-        }
-
-
-
         public void AddBook(Book book)
         {
             using (var context = new LibraryContext())
@@ -102,6 +91,19 @@ namespace DAL.Repositories
         {
             Book bookToRemove = context.Books.Find(isbn);
             context.Books.Remove(bookToRemove);
+        }
+
+
+        public IList<ApplicationUser> Users
+        {
+            get
+            {
+                using (var context = new LibraryContext())
+                {
+                    IDbSet<ApplicationUser> users = context.Users;
+                    return users.ToList();
+                }
+            }
         }
     }
 }

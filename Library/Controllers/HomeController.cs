@@ -19,12 +19,12 @@ namespace Library.Controllers
         public ActionResult Index(int page = 1)
         {
             PagedBookListViewModel model = new PagedBookListViewModel{
-                Books=service.getBooks().Books.OrderBy(x=>x.ISBN).Skip((page-1)*PageSize).Take(PageSize),
+                Books=service.Books.Books.OrderBy(x=>x.ISBN).Skip((page-1)*PageSize).Take(PageSize),
             PageInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = PageSize,
-                TotalItems = service.getBooks().Books.Count()
+                TotalItems = service.Books.Books.Count()
             }
         };
             return View(model);
@@ -46,7 +46,7 @@ namespace Library.Controllers
 
         public FileContentResult GetImage(string isbn)
         {
-            BookViewModel book = service.getBooks().Books.First(p => p.ISBN==isbn);
+            BookViewModel book = service.Books.Books.First(p => p.ISBN==isbn);
             if (book != null)
             {
                 return File(book.Image, book.ImageMime);

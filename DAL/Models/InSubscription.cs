@@ -29,6 +29,9 @@ namespace DAL.Models
         [Required]
         public bool IsInUse {get;set;}
 
+        [Required]
+        public bool IsAccepted { get; set; }
+
         public Book Book { get; set; }
 
         public ApplicationUser User { get; set; }
