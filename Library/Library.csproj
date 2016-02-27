@@ -303,6 +303,8 @@
     <Content Include="Areas\Admin\Views\Book\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Book\Edit.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Shared\IncorrectQuantity.cshtml" />
+    <Content Include="Views\Shared\AlreadyHave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

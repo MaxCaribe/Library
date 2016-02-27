@@ -8,9 +8,9 @@
             @Html.Label(Model.Name, new { @class = "name" })
             @if (User.IsInRole("user") || User.IsInRole("librarian") || User.IsInRole("admin"))
             {
-                @Html.ActionLink("Subscribe", "Subscribe", new { isbn = Model.ISBN, id = User.Identity.Name },
+                @Html.ActionLink("Subscribe", "Subscribe", new { isbn = Model.ISBN, userName = User.Identity.Name, isToTheLibrary = false },
     new { onclick = "return confirm('Are you sure you want to take this book in subscription?');" }) <span>or</span>
-                @Html.ActionLink("take it to the library", "TakeToTheLibrary", new { isbn = Model.ISBN, id=User.Identity.Name },
+                @Html.ActionLink("take it to the library", "Subscribe", new { isbn = Model.ISBN, userName = User.Identity.Name, isToTheLibrary=true },
     new { onclick = "return confirm('Are you sure you want to take this book to the library?');" })
             }
         </div>

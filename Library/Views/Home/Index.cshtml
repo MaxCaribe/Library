@@ -1,10 +1,19 @@
 ﻿@model Library.Models.PagedBookListViewModel
 
 <hr />
-<div style="overflow:auto; padding-top:50px">
+@using(Html.BeginForm("Index","Home")){
+ @Html.DropDownList("Sort", new List<SelectListItem> { new SelectListItem{ Value="Name", Text="Name"},
+    new SelectListItem{ Value="Author", Text="Author"},
+    new SelectListItem{ Value="Publisher", Text="Publisher"},
+    new SelectListItem{ Value="PublishDate", Text="Publish date"}})
+@Html.DropDownList("SortType", new List<SelectListItem> { new SelectListItem{ Value="Asc", Text="Ascending"},
+    new SelectListItem{ Value="Desc", Text="Descending"}})
+<button class="mybutton" type="submit">Sort</button>
+}
+<div class="row" style="overflow:auto; padding-top:50px">
     @foreach (var p in Model.Books)
     {
-        <div class="col-md-2">
+        <div class="col-md-2" style="height:350px">
             @if (p.Image.Length > 0)
             {
                 <div>
@@ -12,7 +21,15 @@
  new { p.ISBN })" />
                 </div>
             }
-            <h3>@p.Name</h3>
+            <h3>
+                @if (p.Name.Contains(":")) { 
+                    @p.Name.Substring(0,p.Name.IndexOf(":"))
+                }
+                else
+                {
+                    @p.Name
+                }
+            </h3>
             @if (p.Author.Contains(","))
             {
                 @p.Author.Substring(0, p.Author.IndexOf(','))
@@ -25,6 +42,7 @@
                 @Html.ActionLink("Details", "Details", new { isbn = p.ISBN })
             </p>
         </div>
+    
     }
 
 </div>

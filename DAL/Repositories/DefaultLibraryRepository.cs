@@ -39,23 +39,37 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
-                Add(book, context);
+                context.Books.Add(book);
                 context.SaveChanges();
             }
         }
 
-        public void MadeSubscription(Book book, ApplicationUser user)
+        public void MakeSubscription(Book book, string userId,bool isToTheLibrary)
         {
+            
             using (var context = new LibraryContext())
             {
+                DateTime returnDate;
+                if (isToTheLibrary)
+                {
+                    returnDate = DateTime.Today;
+                }
+                else
+                {
+                    returnDate = DateTime.Today.AddDays(14);
+                }
                 context.InSubscriptions.Add(new InSubscription
                 {
                     ISBN = book.ISBN,
                     IsInUse = true,
-                    UserId = user.Id,
+                    UserId = userId,
                     DateOfReceipt = DateTime.Today,
-                    ReturnDate = DateTime.Today.AddDays(14)
+                    ReturnDate = returnDate
                 });
+                book.Quantity -= 1;
+                EditBook(book);
+                context.SaveChanges();
+                
             }
         }
 
@@ -69,8 +83,8 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
-                Remove(book.ISBN, context);
-                Add(book, context);
+                var original = context.Books.Find(book.ISBN);
+                context.Entry(original).CurrentValues.SetValues(book);
                 context.SaveChanges();
             }
         }
@@ -79,20 +93,10 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
-                Remove(isbn, context);
+                Book bookToRemove = context.Books.Find(isbn);
+                context.Books.Remove(bookToRemove);
                 context.SaveChanges();
             }
-        }
-
-        private static void Add(Book book, LibraryContext context)
-        {
-            context.Books.Add(book);
-        }
-
-        private static void Remove(string isbn, LibraryContext context)
-        {
-            Book bookToRemove = context.Books.Find(isbn);
-            context.Books.Remove(bookToRemove);
         }
 
 
@@ -108,5 +112,21 @@ namespace DAL.Repositories
             }
         }
 
+
+        public bool isSubscribedAlready(string isbn, string userId)
+        {
+            using (var context = new LibraryContext())
+            {
+                    InSubscription model = context.InSubscriptions.FirstOrDefault(x => x.ISBN == isbn && x.UserId == userId);
+                    if (model == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+            }
+        }
     }
 }

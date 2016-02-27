@@ -12,10 +12,11 @@ namespace DAL.Repositories.Interfaces
         IList<Book> Books {get;}
         IList<InSubscription> GetAllSubscriptions();
         void AddBook(Book book);
-        void MadeSubscription(Book book, ApplicationUser user);
+        void MakeSubscription(Book book, string userId,bool isToTheLibrary);
         void ReturnBook(InSubscription subscription);
         void EditBook(Book book);
         void RemoveBook(string isbn);
         IList<ApplicationUser> Users { get; }
+        bool isSubscribedAlready(string isbn, string userId);
     }
 }
