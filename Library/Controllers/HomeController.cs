@@ -9,13 +9,19 @@ namespace Library.Controllers
     public class HomeController : Controller
     {
         private ILibraryService service;
-        public int PageSize = 4;
+        public int PageSize = 12;
 
         public HomeController(ILibraryService libraryService)
         {
             service = libraryService;
         }
 
+        public ViewResult Details(string isbn = "9781401248192")
+        {
+            BookViewModel book = service.Books.Books.FirstOrDefault(x => x.ISBN == isbn);
+            return View(book);
+        }
+        
         public ActionResult Index(int page = 1)
         {
             PagedBookListViewModel model = new PagedBookListViewModel{

@@ -11,14 +11,11 @@ namespace DAL.Models
     public class ApplicationUser : IdentityUser
     {
         
-        [Required(ErrorMessage="What is your last name?")]
+        [Required(ErrorMessage="What is your first name?")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage="What is your last name?")]
         public string LastName { get; set; }
-
-        [Required]
-        public bool IsBlocked { get; set; } 
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

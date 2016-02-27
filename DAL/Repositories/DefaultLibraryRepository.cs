@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DAL.Repositories.Interfaces;
 using DAL.Models;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace DAL.Repositories
 {
@@ -105,5 +107,6 @@ namespace DAL.Repositories
                 }
             }
         }
+
     }
 }

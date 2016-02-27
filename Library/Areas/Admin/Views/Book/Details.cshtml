@@ -92,4 +92,8 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { isbn = Model.ISBN }) |
     @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Delete", "Delete", new { isbn = Model.ISBN },
+    new { onclick = "return confirm('Are you sure you wish to delete this book?');" })
+
+
 </p>

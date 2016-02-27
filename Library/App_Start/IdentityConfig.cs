@@ -54,11 +54,8 @@ namespace Library
             // Настройка логики проверки паролей
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                RequiredLength = 8,
                 RequireLowercase = true,
-                RequireUppercase = true,
             };
 
             // Настройка параметров блокировки по умолчанию

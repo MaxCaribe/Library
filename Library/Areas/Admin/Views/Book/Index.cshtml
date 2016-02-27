@@ -1,6 +1,6 @@
 ﻿@model Library.Models.PagedBookListViewModel
-
 <hr />
+@Html.ActionLink("Add new book", "Add")
 <div style="overflow:auto; padding-top:50px">
     @foreach (var p in Model.Books)
     {
@@ -8,7 +8,7 @@
             @if (p.Image.Length > 0)
             {
                 <div>
-                    <img class="smallImage" src="@Url.Action("GetImage", "Home",
+                    <img class="smallImage" src="@Url.Action("GetImage", "Book",
  new { p.ISBN })" />
                 </div>
             }
@@ -22,12 +22,15 @@
                 @p.Author
             }
             <p>
+                @Html.ActionLink("Edit", "Edit", new { isbn = p.ISBN })
                 @Html.ActionLink("Details", "Details", new { isbn = p.ISBN })
+                @Html.ActionLink("Delete", "Delete", new { isbn = p.ISBN },
+    new { onclick = "return confirm('Are you sure you wish to delete this book?');" })
+                
             </p>
         </div>
     }
-
-</div>
+    </div>
 <div>
-    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", "Home", new { page = x }))
+    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", "Book", new { page = x }))
 </div>

@@ -1,0 +1,66 @@
+﻿@model BLL.ViewModels.BookViewModel
+           <hr />
+<div class="row">
+    <div class="book col-md-9">
+        <img class="image col-md-3"
+             src="@Url.Action("GetImage", "Home",new { Model.ISBN })" />
+        <div>
+            @Html.Label(Model.Name, new { @class = "name" })
+            @if (User.IsInRole("user") || User.IsInRole("librarian") || User.IsInRole("admin"))
+            {
+                @Html.ActionLink("Subscribe", "Subscribe", new { isbn = Model.ISBN, id = User.Identity.Name },
+    new { onclick = "return confirm('Are you sure you want to take this book in subscription?');" }) <span>or</span>
+                @Html.ActionLink("take it to the library", "TakeToTheLibrary", new { isbn = Model.ISBN, id=User.Identity.Name },
+    new { onclick = "return confirm('Are you sure you want to take this book to the library?');" })
+            }
+        </div>
+        <div>
+            By @Html.DisplayFor(x => Model.Author)
+        </div>
+        <hr />
+        <div>
+            @Html.DisplayFor(x => Model.Description)
+        </div>
+    </div>
+    <dl class="col-md-2 dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(x => Model.Format) 
+        <dd>
+            @Html.DisplayFor(x => Model.Format)
+        <dd />
+        <dt>
+            @Html.DisplayNameFor(x => Model.Pages) 
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => Model.Pages)
+        <dd />
+        <dt>
+           @Html.DisplayNameFor(x => Model.Language) 
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => Model.Language)
+        <dd />
+        <dt>
+            @Html.DisplayNameFor(x => Model.Publisher) 
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => Model.Publisher)
+        <dd />
+        <dt>
+            @Html.DisplayNameFor(x => Model.PublicationDate) 
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => Model.PublicationDate).ToString().Substring(0,10)
+        <dd />
+        <dt>
+            @Html.DisplayName("Available")
+        </dt>
+        <dd>
+            @Html.DisplayFor(x => Model.Quantity)
+        <dd />
+        
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
