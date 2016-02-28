@@ -1,27 +1,32 @@
-﻿using System;
+﻿using BLL.Services.Interfaces;
+using BLL.ViewModels;
+using Library.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Library.Models;
 
 namespace Library.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private ILibraryService service;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public ManageController()
+        public ManageController(ILibraryService libraryService)
         {
+            service = libraryService;
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ILibraryService libraryService)
         {
+            service = libraryService;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -32,9 +37,9 @@ namespace Library.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -52,16 +57,15 @@ namespace Library.Controllers
 
         //
         // GET: /Manage/Index
-        public ActionResult Index(ManageMessageId? message)
+        public ActionResult Index()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль изменен."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
-                : "";
-
             var userId = User.Identity.GetUserId();
-
-            return View();
+            InSubscriptionWithUsersViewModel model = new InSubscriptionWithUsersViewModel
+            {
+                Subscriptions = service.Subscriptions.Subscriptions,
+                Users = service.Users.Users.Where(x => x.Id == userId).ToList()
+            };
+            return View(model);
         }
 
         //
@@ -89,13 +93,12 @@ namespace Library.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index", new { });
             }
             AddErrors(result);
             return View(model);
         }
 
-   
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -107,7 +110,8 @@ namespace Library.Controllers
             base.Dispose(disposing);
         }
 
-#region Вспомогательные приложения
+        #region Вспомогательные приложения
+
         // Используется для защиты от XSRF-атак при добавлении внешних имен входа
         private const string XsrfKey = "XsrfId";
 
@@ -127,27 +131,6 @@ namespace Library.Controllers
             }
         }
 
-        private bool HasPassword()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PasswordHash != null;
-            }
-            return false;
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
-#endregion
+        #endregion Вспомогательные приложения
     }
 }

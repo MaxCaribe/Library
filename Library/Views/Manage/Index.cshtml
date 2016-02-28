@@ -1,14 +1,13 @@
-﻿
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
+﻿@model BLL.ViewModels.InSubscriptionWithUsersViewModel
+<div class="row" style="overflow:auto;">
     <h4>Your personal account</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="col-md-6 dl-horizontal ">
+        @Html.Partial("AccountInfo", Model.Users.ElementAt(0))
         <dt>Password:</dt>
         <dd>
             [
-                @Html.ActionLink("Change password", "ChangePassword")
+            @Html.ActionLink("Change password", "ChangePassword")
             ]
         </dd>
     </dl>

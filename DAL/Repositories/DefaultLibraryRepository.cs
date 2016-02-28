@@ -1,19 +1,18 @@
-﻿using System;
+﻿using DAL.Models;
+using DAL.Repositories.Interfaces;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Repositories.Interfaces;
-using DAL.Models;
-using System.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity;
 
 namespace DAL.Repositories
 {
     public class DefaultLibraryRepository : ILibraryRepository
     {
-
         public IList<Book> Books
         {
             get
@@ -26,12 +25,15 @@ namespace DAL.Repositories
             }
         }
 
-        public IList<InSubscription> GetAllSubscriptions()
+        public IList<InSubscription> Subscriptions
         {
-            using (var context = new LibraryContext())
+            get
             {
-                DbSet<InSubscription> subs = context.InSubscriptions;
-                return new List<InSubscription>(subs);
+                using (var context = new LibraryContext())
+                {
+                    DbSet<InSubscription> subs = context.InSubscriptions;
+                    return new List<InSubscription>(subs);
+                }
             }
         }
 
@@ -44,9 +46,8 @@ namespace DAL.Repositories
             }
         }
 
-        public void MakeSubscription(Book book, string userId,bool isToTheLibrary)
+        public void MakeSubscription(Book book, string userId, bool isToTheLibrary)
         {
-            
             using (var context = new LibraryContext())
             {
                 DateTime returnDate;
@@ -69,7 +70,6 @@ namespace DAL.Repositories
                 book.Quantity -= 1;
                 EditBook(book);
                 context.SaveChanges();
-                
             }
         }
 
@@ -77,7 +77,6 @@ namespace DAL.Repositories
         {
             throw new NotImplementedException();
         }
-
 
         public void EditBook(Book book)
         {
@@ -99,7 +98,6 @@ namespace DAL.Repositories
             }
         }
 
-
         public IList<ApplicationUser> Users
         {
             get
@@ -112,20 +110,19 @@ namespace DAL.Repositories
             }
         }
 
-
         public bool isSubscribedAlready(string isbn, string userId)
         {
             using (var context = new LibraryContext())
             {
-                    InSubscription model = context.InSubscriptions.FirstOrDefault(x => x.ISBN == isbn && x.UserId == userId);
-                    if (model == null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                InSubscription model = context.InSubscriptions.FirstOrDefault(x => x.ISBN == isbn && x.UserId == userId);
+                if (model == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
     }

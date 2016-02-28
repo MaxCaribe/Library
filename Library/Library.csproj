@@ -305,6 +305,7 @@
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Shared\IncorrectQuantity.cshtml" />
     <Content Include="Views\Shared\AlreadyHave.cshtml" />
+    <Content Include="Views\Shared\AccountInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

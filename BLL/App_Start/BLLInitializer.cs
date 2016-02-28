@@ -1,17 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using BLL.Services;
+using BLL.Services.Interfaces;
+using BLL.ViewModels;
+using DAL.Models;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
+using Microsoft.AspNet.Identity;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ninject;
-using DAL.Repositories.Interfaces;
-using DAL.Repositories;
-using DAL.Models;
-using BLL.ViewModels;
-using BLL.Services.Interfaces;
-using BLL.Services;
-using AutoMapper;
-using Microsoft.AspNet.Identity;
 
 namespace BLL.App_Start
 {
@@ -24,6 +24,7 @@ namespace BLL.App_Start
             Mapper.CreateMap<Book, BookViewModel>();
             Mapper.CreateMap<BookViewModel, Book>();
             Mapper.CreateMap<ApplicationUser, UserViewModel>();
+            Mapper.CreateMap<InSubscription, InSubscriptionsViewModel>();
         }
     }
 }
