@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace DAL.Repositories
 {
@@ -31,8 +32,8 @@ namespace DAL.Repositories
             {
                 using (var context = new LibraryContext())
                 {
-                    DbSet<InSubscription> subs = context.InSubscriptions;
-                    return new List<InSubscription>(subs);
+                    List<InSubscription> subs = context.InSubscriptions.Include(x => x.Book).Include(x => x.User).ToList();
+                    return subs;
                 }
             }
         }
@@ -73,9 +74,17 @@ namespace DAL.Repositories
             }
         }
 
-        public void ReturnBook(InSubscription subscription)
+        public void ReturnBook(int subscriptionId)
         {
-            throw new NotImplementedException();
+            using (var context = new LibraryContext())
+            {
+                var original = context.InSubscriptions.Find(subscriptionId);
+                original.ReturnDate = DateTime.Today.Date;
+                original.IsInUse = false;
+                var book = context.Books.First(x => x.ISBN == original.ISBN);
+                book.Quantity += 1;
+                context.SaveChanges();
+            }
         }
 
         public void EditBook(Book book)
@@ -104,8 +113,8 @@ namespace DAL.Repositories
             {
                 using (var context = new LibraryContext())
                 {
-                    IDbSet<ApplicationUser> users = context.Users;
-                    return users.ToList();
+                    IList<ApplicationUser> users = context.Users.Include(x => x.Roles).ToList();
+                    return users;
                 }
             }
         }
@@ -123,6 +132,32 @@ namespace DAL.Repositories
                 {
                     return true;
                 }
+            }
+        }
+
+        public IList<SelectListItem> Roles
+        {
+            get
+            {
+                using (var context = new LibraryContext())
+                {
+                    List<SelectListItem> model = context.Roles.Select(m => new SelectListItem
+                    {
+                        Value = m.Id,
+                        Text = m.Name
+                    }).ToList();
+                    return model;
+                }
+            }
+        }
+
+        public void GiveBook(int subscriptionId)
+        {
+            using (var context = new LibraryContext())
+            {
+                var original = context.InSubscriptions.Find(subscriptionId);
+                original.IsAccepted = true;
+                context.SaveChanges();
             }
         }
     }

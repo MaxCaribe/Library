@@ -1,10 +1,20 @@
 ﻿@model Library.Models.PagedBookListViewModel
 <hr />
+@using (Html.BeginForm("Index", "Book", FormMethod.Get))
+{
+    @Html.DropDownList("Sort", new List<SelectListItem> { new SelectListItem{ Value="Name", Text="Name"},
+    new SelectListItem{ Value="Author", Text="Author"},
+    new SelectListItem{ Value="Publisher", Text="Publisher"},
+    new SelectListItem{ Value="PublishDate", Text="Publish date"}})
+    @Html.DropDownList("SortType", new List<SelectListItem> { new SelectListItem{ Value="Asc", Text="Ascending"},
+    new SelectListItem{ Value="Desc", Text="Descending"}})
+    <button class="mybutton" type="submit">Sort</button>
+}
 @Html.ActionLink("Add new book", "Add")
-<div style="overflow:auto; padding-top:50px">
+<div class="row" style="overflow:auto; padding-top:50px">
     @foreach (var p in Model.Books)
     {
-        <div class="col-md-2">
+        <div class="col-md-2" style="height:350px">
             @if (p.Image.Length > 0)
             {
                 <div>
@@ -12,7 +22,16 @@
  new { p.ISBN })" />
                 </div>
             }
-            <h3>@p.Name</h3>
+            <h3>
+                @if (p.Name.Contains(":"))
+                {
+                    @p.Name.Substring(0, p.Name.IndexOf(":"))
+                }
+                else
+                {
+                    @p.Name
+                }
+            </h3>
             @if (p.Author.Contains(","))
             {
                 @p.Author.Substring(0, p.Author.IndexOf(','))
@@ -22,15 +41,14 @@
                 @p.Author
             }
             <p>
-                @Html.ActionLink("Edit", "Edit", new { isbn = p.ISBN })
-                @Html.ActionLink("Details", "Details", new { isbn = p.ISBN })
-                @Html.ActionLink("Delete", "Delete", new { isbn = p.ISBN },
+                @Html.ActionLink("Edit", "Edit", new { area = "admin", isbn = p.ISBN })
+                @Html.ActionLink("Details", "Details", new { area = "admin", isbn = p.ISBN })
+                @Html.ActionLink("Delete", "Delete", new { area = "admin", isbn = p.ISBN },
     new { onclick = "return confirm('Are you sure you wish to delete this book?');" })
-                
             </p>
         </div>
     }
-    </div>
+</div>
 <div>
     @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", "Book", new { page = x }))
 </div>

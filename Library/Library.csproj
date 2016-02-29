@@ -306,6 +306,11 @@
     <Content Include="Views\Shared\IncorrectQuantity.cshtml" />
     <Content Include="Views\Shared\AlreadyHave.cshtml" />
     <Content Include="Views\Shared\AccountInfo.cshtml" />
+    <Content Include="Views\Shared\UserOrBlocked.cshtml" />
+    <Content Include="Views\Shared\Librarian.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Shared\NothingFound.cshtml" />
+    <Content Include="Views\Shared\SearchMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

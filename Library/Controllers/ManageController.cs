@@ -55,15 +55,27 @@ namespace Library.Controllers
             }
         }
 
-        //
-        // GET: /Manage/Index
+        [HttpGet]
+        public ActionResult GiveBook(int id)
+        {
+            service.GiveBook(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult ReturnBook(int id)
+        {
+            service.ReturnBook(id);
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
             InSubscriptionWithUsersViewModel model = new InSubscriptionWithUsersViewModel
             {
                 Subscriptions = service.Subscriptions.Subscriptions,
-                Users = service.Users.Users.Where(x => x.Id == userId).ToList()
+                User = service.Users.Users.First(x => x.Id == userId)
             };
             return View(model);
         }

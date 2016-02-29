@@ -1,23 +1,61 @@
 ﻿@model BLL.ViewModels.UserListViewModel
-@foreach (var p in Model.Users)
-{
-    <table>
-        <thead>
-            @p.
-            @Html.Label("Name")
-        </thead>
-        <thead>
-            @Html.Label("Name")
-        </thead>
-        <thead>
-            @Html.Label("Name")
-        </thead>
-        <thead>
-            @Html.Label("Name")
-        </thead>
-        <thead>
-            @Html.Label("Name")
-        </thead>
-    </table>
-}
+<hr />
 
+<div class="row">
+    <table class="col-md-8">
+        <thead>
+            <tr>
+                <th class="col-md-3">
+                    User id
+                </th>
+                <th>
+                    First name
+                </th>
+                <th>
+                    Second name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Role
+                </th>
+            </tr>
+        </thead>
+        @foreach (var p in Model.Users)
+        {
+            <tr>
+                <td class="col-md-3">
+                    @p.Id
+                </td>
+                <td>
+                    @p.FirstName
+                </td>
+                <td>
+                    @p.LastName
+                </td>
+                <td>
+                    @p.Email
+                </td>
+                <td>
+                    @Model.Roles.First(x => x.Value == p.Roles.ElementAt(0).RoleId).Text
+                </td>
+                <td>
+                    @Html.DropDownList("List", Model.Roles)
+                </td>
+                <td>
+                    <button class="but" type="button">change</button>
+                    <script>
+                        var url = '@Url.Action("ChangeRole")';
+                        $('.but').click(function () {
+                            var row = $(this).closest('tr');
+                            var id = row.children('td').eq(0).text();
+                            var list = row.find('select').val();
+                            window.location.href = url + '?role=' + list + '&id=' + id;
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

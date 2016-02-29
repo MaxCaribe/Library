@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
 {
-   
     public class LoginViewModel
     {
         [Required]
@@ -22,20 +21,20 @@ namespace Library.Models
     public class RegisterViewModel
     {
         [Display(Name = "First name")]
-        [Required(ErrorMessage = "What is your first name?")]
+        [Required(ErrorMessage = "Please, enter your first name.")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last name")]
-        [Required(ErrorMessage = "What is your last name?")]
+        [Required(ErrorMessage = "Please, enter your last name.")]
         public string LastName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Please, enter correct email.")]
+        [EmailAddress(ErrorMessage = "Please, enter correct email.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "Value {0} must consist of not less then {2} symbols.", MinimumLength = 8)]
+        [Required(ErrorMessage = "Please, enter password.")]
+        [StringLength(100, ErrorMessage = "Value {0} must consist of not less than {2} symbols.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -45,5 +44,4 @@ namespace Library.Models
         [Compare("Password", ErrorMessage = "Password and confirmation not match")]
         public string ConfirmPassword { get; set; }
     }
-
 }

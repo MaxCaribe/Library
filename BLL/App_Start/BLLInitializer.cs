@@ -6,6 +6,7 @@ using DAL.Models;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
 using System;
 using System.Collections.Generic;

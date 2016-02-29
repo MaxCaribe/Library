@@ -22,6 +22,32 @@ namespace Library.Controllers
             return View(book);
         }
 
+        public ActionResult Search(string search, int page = 1)
+        {
+            PagedBookListViewModel model = null;
+            try
+            {
+                var books = service.Books.Books.Where(x => x.Name.ToLower().Contains(search.ToLower())
+                    || x.Author.ToLower().Contains(search.ToLower())).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
+
+                model = new PagedBookListViewModel
+                {
+                    Books = books,
+                    PageInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = books.Count()
+                    }
+                };
+            }
+            catch
+            {
+                return RedirectToAction("NothingFound");
+            }
+            return View(model);
+        }
+
         public ActionResult Index(string Sort = "Name", int page = 1, string SortType = "Asc")
         {
             PagedBookListViewModel model = null;
@@ -140,20 +166,6 @@ namespace Library.Controllers
                 }
             }
             return View(model);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
 
         public FileContentResult GetImage(string isbn)

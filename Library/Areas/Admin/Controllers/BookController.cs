@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BLL.Services.Interfaces;
+using BLL.ViewModels;
+using Library.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,9 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BLL.Services.Interfaces;
-using Library.Models;
-using BLL.ViewModels;
 
 namespace Library.Areas.Admin.Controllers
 {
@@ -16,7 +16,7 @@ namespace Library.Areas.Admin.Controllers
     public class BookController : Controller
     {
         private ILibraryService service;
-        public int PageSize = 4;
+        public int PageSize = 12;
 
         public BookController(ILibraryService libraryService)
         {
@@ -43,13 +43,12 @@ namespace Library.Areas.Admin.Controllers
             BookViewModel book = service.Books.Books.FirstOrDefault(x => x.ISBN == isbn);
             return View(book);
         }
-        
 
         public ViewResult Add()
         {
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult Add([Bind(Include = "ISBN,Name,Author,Description,Publisher,Language,Format,Pages,PublicationDate,Quantity")] BookViewModel book, HttpPostedFileBase image = null)
         {
@@ -61,7 +60,7 @@ namespace Library.Areas.Admin.Controllers
                     book.Image = new byte[image.ContentLength];
                     image.InputStream.Read(book.Image, 0, image.ContentLength);
                 }
-                service.Add(book);  
+                service.Add(book);
                 return RedirectToAction("Index");
             }
             return View();
@@ -69,7 +68,7 @@ namespace Library.Areas.Admin.Controllers
 
         public ViewResult Edit(string isbn)
         {
-            BookViewModel book = service.Books.Books.FirstOrDefault(x => x.ISBN  == isbn);
+            BookViewModel book = service.Books.Books.FirstOrDefault(x => x.ISBN == isbn);
             return View(book);
         }
 
@@ -100,7 +99,6 @@ namespace Library.Areas.Admin.Controllers
             service.Remove(isbn);
             return RedirectToAction("Index");
         }
-
 
         public FileContentResult GetImage(string isbn)
         {

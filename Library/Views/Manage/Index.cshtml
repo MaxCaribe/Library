@@ -1,9 +1,24 @@
 ﻿@model BLL.ViewModels.InSubscriptionWithUsersViewModel
+<div class="row">
+    <h4 class="col-md-4">Your personal account</h4>
+    @if (User.IsInRole("user") || User.IsInRole("blocked"))
+    {
+        <h4 class="col-md-7">Your books</h4>
+    }
+    @if (User.IsInRole("librarian"))
+    {
+        <h4 class="col-md-7">All books in use</h4>
+    }
+</div>
 <div class="row" style="overflow:auto;">
-    <h4>Your personal account</h4>
+
     <hr />
-    <dl class="col-md-6 dl-horizontal ">
-        @Html.Partial("AccountInfo", Model.Users.ElementAt(0))
+    @if (User.IsInRole("blocked"))
+    {
+        <h4 style="color:red">You are blocked! </h4>
+    }
+    <dl class="col-md-4 dl-horizontal ">
+        @Html.Partial("AccountInfo", Model.User)
         <dt>Password:</dt>
         <dd>
             [
@@ -11,4 +26,12 @@
             ]
         </dd>
     </dl>
+    @if (User.IsInRole("user") || User.IsInRole("blocked"))
+    {
+        @Html.Partial("UserOrBlocked")
+    }
+    @if (User.IsInRole("librarian"))
+    {
+        @Html.Partial("Librarian")
+    }
 </div>

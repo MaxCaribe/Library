@@ -1,0 +1,79 @@
+﻿@model BLL.ViewModels.InSubscriptionWithUsersViewModel
+
+<table class="col-md-8">
+    <thead>
+        <tr>
+            <th>
+                ISBN
+            </th>
+            <th>
+                Book name
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Order date
+            </th>
+            <th>
+                Return date
+            </th>
+            <th>
+                Received?
+            </th>
+            <th>
+                Fine
+            </th>
+        </tr>
+    </thead>
+    @foreach (var p in Model.Subscriptions.Where(x => x.UserId == Model.User.Id))
+    {
+        <tr>
+            <td>
+                @p.Book.ISBN
+            </td>
+            <td>
+                @if (p.Book.Name.Contains(":"))
+                {
+                    @p.Book.Name.Substring(0, p.Book.Name.IndexOf(":"))
+                }
+                else
+                {
+                    if (p.Book.Name.Length > 29)
+                    {
+                        @p.Book.Name.Substring(0, 30)<span>...</span>
+                    }
+                    else
+                    {
+                        @p.Book.Name
+                    }
+                }
+            </td>
+            <td>
+                @if (p.Book.Author.Contains(","))
+                {
+                    @p.Book.Author.Substring(0, p.Book.Author.IndexOf(','))
+                }
+                else
+                {
+                    @p.Book.Author
+                }
+            </td>
+            <td>
+                @p.DateOfReceipt.ToShortDateString()
+            </td>
+            <td>
+                @p.ReturnDate.ToShortDateString()
+            </td>
+            <td>
+                @p.IsAccepted.ToString()
+            </td>
+            @if (DateTime.Today.Date > p.ReturnDate.Date)
+            {
+                <td>
+                    @((DateTime.Today.Date - p.ReturnDate.Date).Days.ToString())$
+                </td>
+            }
+        </tr>
+    }
+</table>

@@ -1,0 +1,75 @@
+﻿@model BLL.ViewModels.InSubscriptionWithUsersViewModel
+
+<table class="col-md-8">
+    <thead>
+        <tr>
+            <th>
+                First name
+            </th>
+            <th>
+                Last name
+            </th>
+            <th>
+                Book name
+            </th>
+            <th>
+                ISBN
+            </th>
+            <th>
+                Order date
+            </th>
+            <th>
+                Return date
+            </th>
+        </tr>
+    </thead>
+    @foreach (var p in Model.Subscriptions.Where(x => x.IsInUse == true))
+    {
+        <tr>
+            <td>
+                @p.User.FirstName
+            </td>
+
+            <td>
+                @p.User.LastName
+            </td>
+            <td>
+                @if (p.Book.Name.Contains(":"))
+                {
+                    @p.Book.Name.Substring(0, p.Book.Name.IndexOf(":"))
+                }
+                else
+                {
+                    if (p.Book.Name.Length > 29)
+                    {
+                        @p.Book.Name.Substring(0, 30)<span>...</span>
+                    }
+                    else
+                    {
+                        @p.Book.Name
+                    }
+                }
+            </td>
+            <td>
+                @p.ISBN
+            </td>
+            <td>
+                @p.DateOfReceipt.ToShortDateString()
+            </td>
+            <td>
+                @p.ReturnDate.ToShortDateString()
+            </td>
+
+            <td>
+                @if (p.IsAccepted)
+                {
+                    @Html.ActionLink("Return", "ReturnBook", new { id = p.Id })
+                }
+                else
+                {
+                    @Html.ActionLink("Give", "GiveBook", new { id = p.Id })
+                }
+            </td>
+        </tr>
+    }
+</table>
