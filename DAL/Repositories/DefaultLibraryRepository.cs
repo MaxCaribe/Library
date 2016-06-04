@@ -20,8 +20,8 @@ namespace DAL.Repositories
             {
                 using (var context = new LibraryContext())
                 {
-                    DbSet<Book> books = context.Books;
-                    return new List<Book>(books);
+                    IList<Book> books = context.Books.Where(x => !x.isDeleted).ToList();
+                    return books;
                 }
             }
         }
@@ -42,6 +42,7 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
+                book.isDeleted = false;
                 context.Books.Add(book);
                 context.SaveChanges();
             }
@@ -101,8 +102,7 @@ namespace DAL.Repositories
         {
             using (var context = new LibraryContext())
             {
-                Book bookToRemove = context.Books.Find(isbn);
-                context.Books.Remove(bookToRemove);
+                context.Books.Find(isbn).isDeleted = true;
                 context.SaveChanges();
             }
         }

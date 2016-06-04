@@ -15,7 +15,7 @@
     @foreach (var p in Model.Books)
     {
         <div class="col-md-2" style="height:350px">
-            @if (p.Image.Length > 0)
+            @if (p.ImageMime != null)
             {
                 <div>
                     <img class="smallImage" src="@Url.Action("GetImage", "Book",

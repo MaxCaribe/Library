@@ -5,11 +5,12 @@ namespace Library.Models
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Please, enter correct email.")]
+        [EmailAddress(ErrorMessage = "Please, enter correct email.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please, enter password.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

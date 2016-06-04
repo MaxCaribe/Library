@@ -16,7 +16,7 @@ namespace Library.Controllers
             service = libraryService;
         }
 
-        public ViewResult Details(string isbn)
+        public ViewResult Details(string isbn = "9781853262715")
         {
             BookViewModel book = service.Books.Books.FirstOrDefault(x => x.ISBN == isbn);
             return View(book);
@@ -43,7 +43,7 @@ namespace Library.Controllers
             }
             catch
             {
-                return RedirectToAction("NothingFound");
+                return View("NothingFound");
             }
             return View(model);
         }

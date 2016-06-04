@@ -45,6 +45,16 @@ namespace Library.Areas.Admin.Controllers
             return View(service.Users);
         }
 
+        public ActionResult Fines()
+        {
+            NewViewModel model = new NewViewModel
+            {
+                Subscriptions = service.Subscriptions.Subscriptions,
+                Users = service.Users.Users
+            };
+            return View(model);
+        }
+
         [HttpGet]
         public ActionResult ChangeRole(string id, string role)
         {

@@ -1,0 +1,56 @@
+﻿@model BLL.ViewModels.NewViewModel
+
+<table class="col-md-8">
+    <thead>
+        <tr>
+            <th>
+                First name
+            </th>
+            <th>
+                Last name
+            </th>
+            <th>
+                Book name
+            </th>
+        </tr>
+    </thead>
+    @foreach (var p in Model.Users)
+    {
+        <tr>
+            <td>
+                @p.FirstName
+            </td>
+
+            <td>
+                @p.LastName
+            </td>
+            <td>
+                @foreach (var j in Model.Subscriptions.Where(x => x.UserId == p.Id))
+                {
+
+                    if (j.Book.Name.Contains(":"))
+                    {
+                        @j.Book.Name.Substring(0, j.Book.Name.IndexOf(":"))
+                    }
+                    else
+                    {
+                        if (j.Book.Name.Length > 29)
+                        {
+                            @j.Book.Name.Substring(0, 30)<span>...</span>
+                        }
+                        else
+                        {
+                            @j.Book.Name
+                        }
+                    }
+
+                }
+            </td>
+            <td>
+                @(Model.Subscriptions.Where(x => x.UserId == p.Id && x.ReturnDate < DateTime.Today.Date)
+            .Sum(x => (DateTime.Today.Date - x.ReturnDate.Date).Days))
+            </td>
+        </tr>
+
+    }
+</table>

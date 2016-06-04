@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -56,9 +57,10 @@ namespace Library.Areas.Admin.Controllers
             {
                 if (image != null)
                 {
-                    book.ImageMime = image.ContentType;
-                    book.Image = new byte[image.ContentLength];
-                    image.InputStream.Read(book.Image, 0, image.ContentLength);
+                    string myfile = Path.GetFileNameWithoutExtension(Path.GetFileName(image.FileName))
+                        + "_" + book.ISBN + Path.GetExtension(image.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Img"), myfile);
+                    image.SaveAs(path);
                 }
                 service.Add(book);
                 return RedirectToAction("Index");
@@ -73,16 +75,19 @@ namespace Library.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([Bind(Include = "ISBN,Name,Author,Description,Publisher,Language,Format,Pages,PublicationDate,Quantity")] BookViewModel book, HttpPostedFileBase image = null)
+        public ActionResult Edit([Bind(Include = "ISBN,Name,Author,Description,Publisher,Language,Format,Pages,PublicationDate,Quantity,ImageMime")] BookViewModel book, HttpPostedFileBase image = null)
         {
             if (ModelState.IsValid)
             {
                 if (image != null)
                 {
-                    book.ImageMime = image.ContentType;
-                    book.Image = new byte[image.ContentLength];
-                    image.InputStream.Read(book.Image, 0, image.ContentLength);
+                    string myfile = Path.GetFileNameWithoutExtension(Path.GetFileName(image.FileName))
+                        + "_" + book.ISBN + Path.GetExtension(image.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Img"), myfile);
+                    image.SaveAs(path);
+                    book.ImageMime = path;
                 }
+
                 service.Edit(book);
                 return RedirectToAction("Index");
             }
@@ -100,12 +105,12 @@ namespace Library.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public FileContentResult GetImage(string isbn)
+        public FilePathResult GetImage(string isbn)
         {
             BookViewModel book = service.Books.Books.FirstOrDefault(p => p.ISBN == isbn);
             if (book != null)
             {
-                return File(book.Image, book.ImageMime);
+                return File(book.ImageMime, ".jpg");
             }
             else
             {

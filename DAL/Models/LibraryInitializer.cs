@@ -1,16 +1,16 @@
-﻿using System;
+﻿using DAL.Properties;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
-using DAL.Properties;
 
 namespace DAL.Models
 {
     public class LibraryInitializer : CreateDatabaseIfNotExists<LibraryContext>
     {
-
         protected override void Seed(LibraryContext context)
         {
             context.Books.Add(new Book
@@ -43,6 +43,9 @@ namespace DAL.Models
                 ImageMime = null,
                 Image = null
             });
+            context.Roles.Add(new IdentityRole("user"));
+            context.Roles.Add(new IdentityRole("admin"));
+            context.Roles.Add(new IdentityRole("librarian"));
             base.Seed(context);
         }
     }

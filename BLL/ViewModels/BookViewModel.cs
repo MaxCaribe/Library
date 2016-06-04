@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DAL.Models
+namespace BLL.ViewModels
 {
-    public class Book
+    public class BookViewModel
     {
         [Required(ErrorMessage = "Book should have ISBN.")]
         [Key]
@@ -45,7 +49,5 @@ namespace DAL.Models
         public byte[] Image { get; set; }
 
         public string ImageMime { get; set; }
-
-        public bool isDeleted { get; set; }
     }
 }
